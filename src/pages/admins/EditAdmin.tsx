@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 const schema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
-    phone: z.string().optional(),
+    email: z.string().optional(),
   })
 
 type FormData = z.infer<typeof schema>;
@@ -40,9 +40,8 @@ const EditAdmin = () => {
       const user = location.state.user;
       reset({
         name: user.name,
-        phone: user.phone || "",
+        email: user.email || "",
       });
-      setImagePreview(user.image || null);
     }
   }, [location.state, reset]);
 
@@ -87,7 +86,7 @@ const EditAdmin = () => {
         <div className="flex flex-col gap-2">
           <label htmlFor="phone">Phone</label>
           <Controller
-            name="phone"
+            name="email"
             control={control}
             render={({ field }) => (
               <Input
@@ -95,12 +94,12 @@ const EditAdmin = () => {
                 id="phone"
                 type="tel"
                 disabled={mutation.isPending}
-                className={`${errors.phone ? "border-red-500" : ""}`}
+                className={`${errors.email ? "border-red-500" : ""}`}
               />
             )}
           />
-          {errors.phone && (
-            <p className="text-red-500">{errors.phone.message}</p>
+          {errors.email && (
+            <p className="text-red-500">{errors.email.message}</p>
           )}
         </div>
 

@@ -12,25 +12,17 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
-  Building2,
-  Calendar,
   PencilIcon,
-  Phone,
   PlusIcon,
   TrashIcon,
-  UserIcon,
 } from "lucide-react";
 import Loading from "@/components/Loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 type User = {
-  avatar: null;
-  birthDay: string;
   email: string;
-  gender: "male";
   id: number;
   name: string;
-  phone: string;
-  type: string;
 };
 
 export default function Admins() {
@@ -54,7 +46,7 @@ export default function Admins() {
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosInstance.get("/users");
-      console.log("Fetched Admins:", res.data);
+      console.log(res.data)
       return res.data;
     },
   });
@@ -64,24 +56,24 @@ export default function Admins() {
   // Function to handle deletion
   const handleDelete = async (id: number) => {
     try {
-      await axiosInstance.delete(`/auth/admins/${id}`);
-      setModalOpen(false); // Close modal after deletion
-      setSelectedUser(null); // Clear selected user
-      queryClient.invalidateQueries({ queryKey: ["users"] }); // Refetch users to update the list
+      await axiosInstance.delete(`/users/${id}`);
+      setModalOpen(false); 
+      setSelectedUser(null);
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     } catch (err) {
       console.error("Failed to delete user:", err);
     }
   };
 
   // Loading state
-  // if (isLoading) return <Loading />;
+  if (isLoading) return <Loading />;
 
-  // if (error)
-  //   return (
-  //     <div className="flex justify-center items-center h-full self-center mx-auto">
-  //       Error loading users
-  //     </div>
-  //   );
+  if (error)
+    return (
+      <div className="flex justify-center items-center h-full self-center mx-auto">
+        Error loading users
+      </div>
+    );
 
   const MobileCardView = ({ data }: { data: User[] }) => (
     <div className="space-y-4">
@@ -102,10 +94,6 @@ export default function Admins() {
             </div>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Phone className="h-4 w-4" />
-              {user.phone || "N/A"}
-            </div>
             <div className="text-sm">
               <span className="font-medium">Email: </span>
               {user.email || "N/A"}
@@ -117,13 +105,10 @@ export default function Admins() {
   );
 
   // Filter users based on search input
-  // const filteredData = users?.filter(
-  //   (user: User) =>
-  //     user?.name?.toLowerCase().includes(userSearch.toLowerCase()) ||
-  //     user?.email?.toLowerCase().includes(userSearch.toLowerCase()) ||
-  //     user?.phone?.includes(userSearch)
-  // );
-  // console.log(users);
+  const filteredData = users?.filter(
+    (user: User) =>
+       user?.name?.includes(userSearch.toLowerCase()) 
+  );
 
   // Define the columns for the table
   const columns: ColumnDef<User>[] = [
@@ -141,8 +126,8 @@ export default function Admins() {
       },
     },
     {
-      accessorKey: "phone",
-      header: "Phone",
+      accessorKey: "email",
+      header: "Email",
     },
     {
       accessorKey: "actions",
@@ -164,8 +149,7 @@ export default function Admins() {
                 <PencilIcon className="h-4 w-4" />
               </Button>
             </Link>
-            {/* Button to Delete user */}
-            {/* <Button
+            <Button
               variant="ghost"
               size="icon"
               className="text-red-500 hover:text-red-600"
@@ -175,7 +159,7 @@ export default function Admins() {
               }}
             >
               <TrashIcon className="h-4 w-4" />
-            </Button> */}
+            </Button>
           </div>
         );
       },
@@ -202,13 +186,14 @@ export default function Admins() {
       />
 
       {/* Mobile View */}
-      {/* <div className="md:hidden">
+      <div className="md:hidden">
         <MobileCardView data={filteredData || []} />
-      </div> */}
+      </div>
 
       {/* Pass the filtered data to the DataTable */}
-      {/* <div className="hidden md:block">
+      <div className="hidden md:block">
         <DataTable
+        viewLink=""
           columns={columns}
           data={filteredData || []}
           editLink={"/edit-admin"} // Provide the base link for editing users
@@ -216,7 +201,7 @@ export default function Admins() {
             throw new Error("Function not implemented.");
           }}
         />
-      </div> */}
+      </div>
 
       {/* Confirmation Modal */}
       <ConfirmationModal

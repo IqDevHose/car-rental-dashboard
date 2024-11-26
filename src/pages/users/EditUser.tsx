@@ -21,11 +21,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  phone: z.string().optional(),
-  birthDay: z.string().optional(), // Birthday is optional for flexibility
-  gender: z.enum(["Male", "Female"]),
-
-  image: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -54,9 +49,6 @@ const EditUser = () => {
       reset({
         name: user.name,
         email: user.email,
-        phone: user.phone || "",
-        birthDay: user.birthDay || "",
-        gender: user.gender || "Male",
       });
       setImagePreview(user.image || null);
     }
@@ -71,21 +63,7 @@ const EditUser = () => {
     },
   });
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        setImagePreview(base64String);
-        setValue("image", base64String);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const onSubmit = (data: FormData) => {
-    // mutation.mutate(data);
     console.log(data);
   };
 
@@ -115,6 +93,7 @@ const EditUser = () => {
           {errors.name && <p className="text-red-500">{errors.name.message}</p>}
         </div>
 
+
         {/* Email Field */}
         <div className="flex flex-col gap-2">
           <label htmlFor="email">Email</label>
@@ -136,94 +115,10 @@ const EditUser = () => {
           )}
         </div>
 
-        {/* Phone Field */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="phone">Phone</label>
-          <Controller
-            name="phone"
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                id="phone"
-                type="tel"
-                disabled={mutation.isPending}
-                className={`${errors.phone ? "border-red-500" : ""}`}
-              />
-            )}
-          />
-          {errors.phone && (
-            <p className="text-red-500">{errors.phone.message}</p>
-          )}
-        </div>
-
-        {/* Birthday Field */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="birthDay">Birthday</label>
-          <Controller
-            name="birthDay"
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                id="birthDay"
-                type="date"
-                disabled={mutation.isPending}
-                className={`${errors.birthDay ? "border-red-500" : ""}`}
-              />
-            )}
-          />
-          {errors.birthDay && (
-            <p className="text-red-500">{errors.birthDay.message}</p>
-          )}
-        </div>
-
-        {/* Gender Field */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="gender">Gender</label>
-          <Controller
-            name="gender"
-            control={control}
-            render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Male">Male</SelectItem>
-                  <SelectItem value="Female">Female</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
-          />
-          {errors.gender && (
-            <p className="text-red-500">{errors.gender.message}</p>
-          )}
-        </div>
-
-        {/* Profile Image Field */}
-        <div className="flex flex-col gap-2">
-          {imagePreview && (
-            <Avatar className="w-24 h-24">
-              <AvatarImage src={imagePreview} alt="Preview" />
-              <AvatarFallback>Preview</AvatarFallback>
-            </Avatar>
-          )}
-          <label htmlFor="image">Profile Image</label>
-          <Input
-            id="image"
-            type="file"
-            onChange={handleImageChange}
-            className="border p-2 rounded"
-            accept="image/*"
-            disabled={mutation.isPending}
-          />
-        </div>
-
         {/* Submit Buttons */}
         <div className="flex justify-end gap-2">
           <Button variant="ghost" onClick={() => navigate("/users")}>
-            Cancel
+           Cancel 
           </Button>
           <Button type="submit" variant="default" disabled={mutation.isPending}>
             {mutation.isPending ? <Spinner size="sm" /> : "Save Changes"}
