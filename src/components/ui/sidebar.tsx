@@ -58,35 +58,10 @@ export default function Sidebar({}: Props) {
             <Nav
               links={[
                 {
-                  title: "Dashboard",
+                  title: "Vehicles",
                   href: "/",
                   icon: LayoutDashboard,
                   variant: "default",
-                },
-
-                // {
-                //   title: "Users",
-                //   href: "/users",
-                //   icon: UsersRound,
-                //   variant: "ghost",
-                // },
-                {
-                  title: "Sales",
-                  href: "/sales",
-                  icon: Star,
-                  variant: "ghost",
-                },
-                {
-                  title: "Products",
-                  href: "/products",
-                  icon: ShoppingCart,
-                  variant: "ghost",
-                },
-                {
-                  title: "Subscriptions",
-                  href: "/subscriptions",
-                  icon: ListCheck,
-                  variant: "ghost",
                 },
                 {
                   title: "Admins",
@@ -94,18 +69,6 @@ export default function Sidebar({}: Props) {
                   icon: Shield,
                   variant: "ghost",
                 },
-                // {
-                //   title: "Auctions",
-                //   href: "/auctions",
-                //   icon: Hammer,
-                //   variant: "ghost",
-                // },
-                // {
-                //   title: "Settings",
-                //   href: "/settings",
-                //   icon: Settings,
-                //   variant: "ghost",
-                // },
               ]}
             />
           </div>

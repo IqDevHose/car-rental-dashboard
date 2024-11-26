@@ -74,14 +74,14 @@ export default function Admins() {
   };
 
   // Loading state
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
 
-  if (error)
-    return (
-      <div className="flex justify-center items-center h-full self-center mx-auto">
-        Error loading users
-      </div>
-    );
+  // if (error)
+  //   return (
+  //     <div className="flex justify-center items-center h-full self-center mx-auto">
+  //       Error loading users
+  //     </div>
+  //   );
 
   const MobileCardView = ({ data }: { data: User[] }) => (
     <div className="space-y-4">
@@ -117,13 +117,13 @@ export default function Admins() {
   );
 
   // Filter users based on search input
-  const filteredData = users?.filter(
-    (user: User) =>
-      user?.name?.toLowerCase().includes(userSearch.toLowerCase()) ||
-      user?.email?.toLowerCase().includes(userSearch.toLowerCase()) ||
-      user?.phone?.includes(userSearch)
-  );
-  console.log(users);
+  // const filteredData = users?.filter(
+  //   (user: User) =>
+  //     user?.name?.toLowerCase().includes(userSearch.toLowerCase()) ||
+  //     user?.email?.toLowerCase().includes(userSearch.toLowerCase()) ||
+  //     user?.phone?.includes(userSearch)
+  // );
+  // console.log(users);
 
   // Define the columns for the table
   const columns: ColumnDef<User>[] = [
@@ -202,12 +202,12 @@ export default function Admins() {
       />
 
       {/* Mobile View */}
-      <div className="md:hidden">
+      {/* <div className="md:hidden">
         <MobileCardView data={filteredData || []} />
-      </div>
+      </div> */}
 
       {/* Pass the filtered data to the DataTable */}
-      <div className="hidden md:block">
+      {/* <div className="hidden md:block">
         <DataTable
           columns={columns}
           data={filteredData || []}
@@ -216,7 +216,7 @@ export default function Admins() {
             throw new Error("Function not implemented.");
           }}
         />
-      </div>
+      </div> */}
 
       {/* Confirmation Modal */}
       <ConfirmationModal
