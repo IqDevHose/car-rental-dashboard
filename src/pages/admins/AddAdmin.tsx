@@ -9,11 +9,17 @@ import Spinner from "@/components/Spinner";
 import { useMutation } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 
+enum RolesEnum {
+  USER = "USER",
+  ADMIN = "ADMIN",
+}
+
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  phone: z.string().optional(),
-  role: z.string().default("admin")
-})
+  email: z.string().email("Invalid email format").min(1, "Email is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  role: z.enum(Object.values(RolesEnum) as [RolesEnum.USER, RolesEnum.ADMIN]) 
+});
 
 type FormData = z.infer<typeof schema>;
 
@@ -34,6 +40,7 @@ const AddAdmin = () => {
   });
 
   const onSubmit = (data: FormData) => {
+    // console.log(data)
     mutation.mutate(data);
   };
 
@@ -55,17 +62,48 @@ const AddAdmin = () => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="phone">Phone</label>
+          <label htmlFor="email">Email</label>
           <Controller
-            name="phone"
+            name="email"
             control={control}
             render={({ field }) => (
-              <Input {...field} id="phone" type="tel" disabled={mutation.isPending} className={`${errors.phone ? 'border-red-500' : ''}`} />
+              <Input {...field} id="phone" type="tel" disabled={mutation.isPending} className={`${errors.email ? 'border-red-500' : ''}`} />
             )}
           />
-          {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
+          {errors.email && <p className="text-red-500">{errors.email.message}</p>}
         </div>
 
+        <div className="flex flex-col gap-2">
+          <label htmlFor="password">Password</label>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <Input {...field} id="password" type="tel" disabled={mutation.isPending} className={`${errors.password ? 'border-red-500' : ''}`} />
+            )}
+          />
+          {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="role" className="block font-medium mb-2">Role</label>
+          <Controller
+            name="role"
+            control={control}
+            render={({ field }) => (
+              <select {...field} className="w-full p-3 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500">
+                {Object.values(RolesEnum).map((role, index) => (
+                  <option key={index} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </select>
+            )}
+          />
+          {errors.role && (
+            <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>
+          )}
+        </div>
 
         <div className="flex justify-between items-center">
           <Button type="submit" variant="default" disabled={mutation.isPending}>
