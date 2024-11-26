@@ -12,6 +12,7 @@ import {
   Hammer,
   Shield,
   Star,
+  Car,
 } from "lucide-react";
 import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
@@ -58,9 +59,9 @@ export default function Sidebar({}: Props) {
             <Nav
               links={[
                 {
-                  title: "Vehicles",
-                  href: "/",
-                  icon: LayoutDashboard,
+                  title: "Cars ",
+                  href: "/cars",
+                  icon: Car,
                   variant: "default",
                 },
                 {

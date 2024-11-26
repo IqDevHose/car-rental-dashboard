@@ -9,9 +9,9 @@ const isAuthenticated = (): boolean => {
 };
 
 const ProtectedRoute = () => {
-  if (!isAuthenticated()) {
-    return <Navigate to="/login" replace />;
-  }
+  // if (!isAuthenticated()) {
+  //   return <Navigate to="/login" replace />;
+  // }
   return (
     <div className="flex">
       <Sidebar />
