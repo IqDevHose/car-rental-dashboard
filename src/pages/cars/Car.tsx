@@ -73,6 +73,15 @@ const Car = () => {
         },
     });
 
+    const deleteMutation = useMutation({
+        mutationFn: async (id: any) => {
+            return await axiosInstance.delete(`/cars/${id}`);
+        },
+        onSuccess: () => {
+            navigate("/cars");
+        },
+    });
+
 
     useEffect(() => {
         if (car) {
@@ -89,6 +98,7 @@ const Car = () => {
                 specification: car.specification,
                 isAvailable: car.isAvailable,
             });
+            setIsAvailable(car.isAvailable)
         }
     }, [car]);
 
@@ -104,7 +114,13 @@ const Car = () => {
         mutation.mutate(updatedData)
     };
 
+    const onDelete = () => {
+        deleteMutation.mutate(id)
+    };
+
+
     const handleSwitchChange = () => {
+        // handleInputChange("isAvailable", !formState.isAvailable)
         setIsAvailable((prev) => !prev);
     };
 
@@ -141,7 +157,7 @@ const Car = () => {
                         {!editable && <Button className="rounded-full" variant="outline" onClick={() => setEditable(true)}><Edit /></Button>}
                         {editable && <Button className="rounded-full" variant="outline" onClick={onSubmit}><Save /></Button>}
 
-                        <Button className="bg-red-600 rounded-full"><Trash /></Button>
+                        <Button onClick={onDelete} className="bg-red-600 rounded-full"><Trash /></Button>
                     </div>
                 </div>
 
