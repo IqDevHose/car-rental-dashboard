@@ -14,6 +14,7 @@ import EditAdmin from "./pages/admins/EditAdmin";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Cars from "./pages/cars/cars";
 import CreateCar from "./pages/cars/createCar";
+import Car from "./pages/cars/Car";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ function App() {
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/cars" element={<Cars />} />
+          <Route path="/cars/:id" element={<Car />} />
           <Route path="/cars/create" element={<CreateCar />} />
           <Route path="/" element={<Home />} />
           <Route path="/admins" element={<Admins />} />
