@@ -57,7 +57,7 @@ export default function Admins() {
   const handleDelete = async (id: number) => {
     try {
       await axiosInstance.delete(`/users/${id}`);
-      setModalOpen(false); 
+      setModalOpen(false);
       setSelectedUser(null);
       queryClient.invalidateQueries({ queryKey: ["users"] });
     } catch (err) {
@@ -107,7 +107,7 @@ export default function Admins() {
   // Filter users based on search input
   const filteredData = users?.filter(
     (user: User) =>
-       user?.name?.includes(userSearch.toLowerCase()) 
+      user?.name?.includes(userSearch.toLowerCase())
   );
 
   // Define the columns for the table
@@ -193,7 +193,7 @@ export default function Admins() {
       {/* Pass the filtered data to the DataTable */}
       <div className="hidden md:block">
         <DataTable
-        viewLink=""
+          viewLink=""
           columns={columns}
           data={filteredData || []}
           editLink={"/edit-admin"} // Provide the base link for editing users

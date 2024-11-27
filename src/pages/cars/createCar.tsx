@@ -4,6 +4,7 @@ import axiosInstance from "@/utils/AxiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom"
 
 type CreateCarDto = {
     name: string;
@@ -32,10 +33,15 @@ const CreateCar = () => {
     const [seats, setSeats] = useState("");
     const [description, setDescription] = useState("");
 
+    const navigate = useNavigate();
+
     const { mutate, isPending } = useMutation({
         mutationFn: async (data: CreateCarDto) => {
             await axiosInstance.post("/cars", data);
         },
+        onSuccess: () => {
+            navigate("/cars");
+        }
     });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,117 +68,117 @@ const CreateCar = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Name</label>
-                        <Input 
-                            type="text" 
-                            placeholder="Car name" 
-                            value={name} 
-                            onChange={(e) => setName(e.target.value)} 
+                        <Input
+                            type="text"
+                            placeholder="Car name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                         />
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Category</label>
-                        <Input 
-                            type="text" 
-                            placeholder="e.g., SUV, Sedan" 
-                            value={category} 
-                            onChange={(e) => setCategory(e.target.value)} 
+                        <Input
+                            type="text"
+                            placeholder="e.g., SUV, Sedan"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
                         />
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Fuel Type</label>
-                        <Input 
-                            type="text" 
-                            placeholder="e.g., Petrol, Diesel" 
-                            value={fuel} 
-                            onChange={(e) => setFuel(e.target.value)} 
+                        <Input
+                            type="text"
+                            placeholder="e.g., Petrol, Diesel"
+                            value={fuel}
+                            onChange={(e) => setFuel(e.target.value)}
                         />
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Mileage</label>
-                        <Input 
-                            type="number" 
-                            placeholder="Mileage in km/l" 
-                            value={mileage} 
-                            onChange={(e) => setMileage(e.target.value)} 
+                        <Input
+                            type="number"
+                            placeholder="Mileage in km/l"
+                            value={mileage}
+                            onChange={(e) => setMileage(e.target.value)}
                         />
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Color</label>
                         <div className="flex gap-2">
-                            <Input 
-                                type="color" 
-                                value={color} 
-                                onChange={(e) => setColor(e.target.value)} 
+                            <Input
+                                type="color"
+                                value={color}
+                                onChange={(e) => setColor(e.target.value)}
                                 className="w-16 h-10 p-1"
                             />
-                            <Input 
-                                type="text" 
-                                value={color} 
-                                onChange={(e) => setColor(e.target.value)} 
+                            <Input
+                                type="text"
+                                value={color}
+                                onChange={(e) => setColor(e.target.value)}
                                 placeholder="Color code or name"
                             />
                         </div>
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Power (HP)</label>
-                        <Input 
-                            type="number" 
-                            placeholder="Engine power" 
-                            value={power} 
-                            onChange={(e) => setPower(e.target.value)} 
+                        <Input
+                            type="number"
+                            placeholder="Engine power"
+                            value={power}
+                            onChange={(e) => setPower(e.target.value)}
                         />
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Engine (cc)</label>
-                        <Input 
-                            type="number" 
-                            placeholder="Engine displacement" 
-                            value={engineDisplacement} 
-                            onChange={(e) => setEngineDisplacement(e.target.value)} 
+                        <Input
+                            type="number"
+                            placeholder="Engine displacement"
+                            value={engineDisplacement}
+                            onChange={(e) => setEngineDisplacement(e.target.value)}
                         />
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Price</label>
-                        <Input 
-                            type="number" 
-                            placeholder="Price per day" 
-                            value={price} 
-                            onChange={(e) => setPrice(e.target.value)} 
+                        <Input
+                            type="number"
+                            placeholder="Price per day"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
                         />
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Seats</label>
-                        <Input 
-                            type="number" 
-                            placeholder="Number of seats" 
-                            value={seats} 
-                            onChange={(e) => setSeats(e.target.value)} 
+                        <Input
+                            type="number"
+                            placeholder="Number of seats"
+                            value={seats}
+                            onChange={(e) => setSeats(e.target.value)}
                         />
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Specification</label>
-                        <Input 
-                            type="text" 
-                            placeholder="Car specifications" 
-                            value={specification} 
-                            onChange={(e) => setSpecification(e.target.value)} 
+                        <Input
+                            type="text"
+                            placeholder="Car specifications"
+                            value={specification}
+                            onChange={(e) => setSpecification(e.target.value)}
                         />
                     </div>
                 </div>
-                
+
                 <div className="space-y-2">
                     <label className="text-sm font-medium">Description</label>
-                    <textarea 
-                        className="w-full min-h-[100px] px-3 py-2 rounded-md border border-input bg-background" 
-                        placeholder="Detailed description" 
-                        value={description} 
-                        onChange={(e) => setDescription(e.target.value)} 
+                    <textarea
+                        className="w-full min-h-[100px] px-3 py-2 rounded-md border border-input bg-background"
+                        placeholder="Detailed description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                     />
                 </div>
 
-                <Button 
-                    type="submit" 
-                    className="w-full md:w-auto" 
+                <Button
+                    type="submit"
+                    className="w-full md:w-auto"
                     disabled={isPending}
                 >
                     {isPending ? (
