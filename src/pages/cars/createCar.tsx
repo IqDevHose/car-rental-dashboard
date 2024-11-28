@@ -40,7 +40,7 @@ const CreateCar = () => {
             await axiosInstance.post("/cars", data);
         },
         onSuccess: () => {
-            navigate("/cars");
+            navigate("/");
         }
     });
 

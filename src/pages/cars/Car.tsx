@@ -36,6 +36,8 @@ const Car = () => {
     const [editable, setEditable] = useState<boolean | undefined>(false);
     const [isAvailable, setIsAvailable] = useState(false);
 
+    const [images, setImages] = useState<string[]>([]);
+
     const [formState, setFormState] = useState<CarSchemaType>({
         name: "",
         description: "",
@@ -47,7 +49,7 @@ const Car = () => {
         mileage: "",
         seats: "",
         specification: "",
-        isAvailable: false
+        isAvailable: false,
     });
 
     const {
@@ -68,8 +70,6 @@ const Car = () => {
         },
         onSuccess: () => {
             setEditable(false)
-            window.location.reload();
-            // navigate("/cars");
         },
     });
 
@@ -78,7 +78,7 @@ const Car = () => {
             return await axiosInstance.delete(`/cars/${id}`);
         },
         onSuccess: () => {
-            navigate("/cars");
+            navigate("/");
         },
     });
 
@@ -99,8 +99,39 @@ const Car = () => {
                 isAvailable: car.isAvailable,
             });
             setIsAvailable(car.isAvailable)
+            setImages(car.images)
         }
     }, [car]);
+
+    const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        // const file = event.target.files?.[0];
+        // if (file) {
+        //     const formData = new FormData();
+        //     formData.append("images", file);
+
+        // try {
+        //     const response = await axiosInstance.post("/upload", formData, {
+        //         headers: { "Content-Type": "multipart/form-data" },
+        //     });
+        //     const newImageUrl = response.data[0]; // Assuming backend returns the first image link
+        //     setImages((prev) => {
+        //         const updatedImages = [...prev];
+        //         updatedImages[index] = newImageUrl;
+        //         return updatedImages;
+        //     });
+        // } catch (error) {
+        //     console.error("Error uploading image:", error);
+        // }
+        // }
+    };
+
+    const handleImageDelete = (index: number) => {
+        setImages((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    const handleAddImage = () => {
+        setImages((prev) => [...prev, ""]); // Add a placeholder for the new image
+    };
 
     const handleInputChange = (field: keyof CarSchemaType, value: string) => {
         setFormState((prevState) => ({
@@ -120,7 +151,6 @@ const Car = () => {
 
 
     const handleSwitchChange = () => {
-        // handleInputChange("isAvailable", !formState.isAvailable)
         setIsAvailable((prev) => !prev);
     };
 
@@ -227,8 +257,8 @@ const Car = () => {
             <div className="imgs flex flex-col mt-4 px-4 py-2">
                 <p className="font-bold pb-1 border-b border-b-gray-100 mb-2">Car Gallery</p>
                 <div className="flex gap-x-4 flex-wrap">
-                    {car?.images.map((img: { link: string; carId: string }) => (
-                        <Dialog key={img.link}>
+                    {images.map((img, index) => (
+                        <Dialog key={index.link}>
                             <DialogTrigger asChild>
                                 <div
                                     className="relative rounded-md overflow-hidden cursor-pointer"
@@ -247,31 +277,55 @@ const Car = () => {
                             <DialogContent className="max-w-lg">
                                 <img src={selectedImage} alt="Car Large View" className="rounded-lg object-cover w-full h-auto" />
 
-                                <div className="flex justify-between gap-x-2">
-                                    <Button className="rounded-full" >
-                                        Change
-                                        {/* <View /> */}
-                                    </Button>
-                                    <Button className="bg-red-600 rounded-full">
+                                <label className="flex justify-between gap-x-2 mt-4">
+                                    <label htmlFor={`file-upload-${img.link}`}>
+                                        <p className="cursor-pointer rounded-full bg-black hover:bg-black/95 py-2 px-4 text-white">
+                                            Change
+                                        </p>
+                                        <input
+                                            type="file"
+                                            id={`file-upload-${img.link}`}
+                                            className="hidden"
+                                            onChange={(e) => handleImageChange(e, index)}
+                                            accept="image/*"
+                                        />
+                                    </label>
+
+                                    {/* Delete button */}
+                                    <Button
+                                        onClick={() => handleImageDelete(index)}
+                                        className="bg-red-600 rounded-full"
+                                    >
                                         <Trash />
                                     </Button>
-                                </div>
+                                </label>
                             </DialogContent>
                         </Dialog>
-                    ))
-                    }
-                    {
-                        editable && (
-                            <div className="relative rounded-md overflow-hidden">
-                                <div className="bg-gray-50/50 hover:bg-gray-50 cursor-pointer border-dashed border border-gray-500 h-full w-[200px] flex justify-center items-center">
-                                    <div className="flex justify-center items-center flex-col">
-                                        <p>Add New</p>
-                                        <Button className="rounded-full" variant={"outline"}><Plus /></Button>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    }
+                    ))}
+
+                    {/* Add new image button */}
+                    <label
+                        htmlFor="new"
+                        className="relative rounded-md overflow-hidden cursor-pointer border-dashed border border-gray-500 h-full w-[200px] flex justify-center items-center py-4 bg-gray-50/50 hover:bg-gray-50"
+                    >
+                        <div className="flex flex-col justify-center items-center">
+
+                            <p className="">
+                                Add New
+                            </p>
+                            <input
+                                type="file"
+                                id="new"
+                                className="hidden"
+                                accept="image/*"
+                            />
+                            <span className="
+                        cursor-pointer rounded-full bg-white border-gray-50/50 shadow-md shadow-gray-200/50 mt-2 text-black hover:bg-black/95 py-2 px-4
+                            ">
+                                <Plus />
+                            </span>
+                        </div>
+                    </label>
                 </div>
             </div>
         </>

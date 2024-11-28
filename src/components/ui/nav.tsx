@@ -25,12 +25,13 @@ export function Nav({ links }: NavProps) {
               to={link.href}
               className={({ isActive }) =>
                 cn(
+                  "text-white",
                   buttonVariants({
                     variant: isActive ? "default" : "ghost",
                     size: "sm",
                   }),
                   link.variant === "default" &&
-                    "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white ",
+                  "dark:bg-muted dark:hover:bg-muted",
                   "justify-start"
                 )
               }
@@ -42,7 +43,7 @@ export function Nav({ links }: NavProps) {
                   className={cn(
                     "ml-auto",
                     link.variant === "default" &&
-                      "text-background dark:text-white"
+                    "text-background "
                   )}
                 >
                   {link.label}

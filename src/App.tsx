@@ -35,10 +35,10 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/cars" element={<Cars />} />
+          <Route path="/" element={<Cars />} />
           <Route path="/cars/:id" element={<Car />} />
           <Route path="/cars/create" element={<CreateCar />} />
-          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<Home />} /> */}
           <Route path="/admins" element={<Admins />} />
           <Route path="/new-admin" element={<AddAdmin />} />
           <Route path="/edit-admin/:id" element={<EditAdmin />} />

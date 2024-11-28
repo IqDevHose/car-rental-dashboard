@@ -16,11 +16,11 @@ import {
 } from "lucide-react";
 import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/images/Hoster-iq.svg";
+import logo from "../../assets/images/logo.png";
 
 type Props = {};
 
-export default function Sidebar({}: Props) {
+export default function Sidebar({ }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ export default function Sidebar({}: Props) {
     <>
       {/* Burger menu button */}
       <button
-        className="fixed top-4 left-4 z-50 p-2 bg-white rounded-md shadow-md md:hidden"
+        className="fixed top-4 left-4 z-50 p-2 rounded-md shadow-md md:hidden"
         onClick={toggleMenu}
       >
         {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -45,14 +45,13 @@ export default function Sidebar({}: Props) {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 z-40 h-screen w-full md:w-64 bg-white shadow-md transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0`}
+        className={`fixed top-0 left-0 z-40 h-screen w-full md:w-64 bg-black shadow-md transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0`}
       >
         <div className="flex flex-col h-full p-4">
           <div className="h-50px] flex justify-center items-center px-8">
-            <div className="img_container">
-              <img src={logo} alt="" className="w-full bg-cover" />
+            <div className="img_container h-[120px]">
+              <img src={logo} alt="" className="w-full h-full bg-cover" />
             </div>
           </div>
           <div className="flex-grow">
@@ -60,7 +59,7 @@ export default function Sidebar({}: Props) {
               links={[
                 {
                   title: "Cars ",
-                  href: "/cars",
+                  href: "/",
                   icon: Car,
                   variant: "default",
                 },
