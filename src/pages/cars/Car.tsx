@@ -100,6 +100,15 @@ const Car = () => {
     },
   });
 
+  const deleteImageMutation = useMutation({
+    mutationFn: async (id: any) => {
+      return await axiosInstance.delete(`/upload/${id}`);
+    },
+    onSuccess: () => {
+      navigate("/cars");
+    },
+  });
+
   useEffect(() => {
     if (car) {
       setFormState({
@@ -145,14 +154,16 @@ const Car = () => {
     }
   };
 
-  const handleAddImage = () => {
-    setImages((prev) => [...prev, ""]); // Add a placeholder for the new image
-  };
+  // const handleAddImage = () => {
+  //   setImages((prev) => [...prev, ""]); // Add a placeholder for the new image
+  // };
 
-  const handleImageDelete = (index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
+  // const handleImageDelete = (index: number) => {
+  //   setImages((prev) => prev.filter((_, i) => i !== index));
+  // };
+  const handleImageDelete = () => {
+    deleteImageMutation.mutate(id);
   };
-
   useEffect(() => {
     if (car) {
       setImages(car.images || []);
@@ -372,7 +383,7 @@ const Car = () => {
 
                   {/* Delete button */}
                   <Button
-                    onClick={() => handleImageDelete(index)}
+                    onClick={() => handleImageDelete()}
                     className="bg-red-600 rounded-full"
                   >
                     <Trash />
