@@ -87,6 +87,7 @@ const Car = () => {
     },
     onSuccess: () => {
       setEditable(false);
+      queryClient.invalidateQueries(["car", id]);
     },
   });
 
@@ -123,33 +124,40 @@ const Car = () => {
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    // const file = event.target.files?.[0];
-    // if (file) {
-    //     const formData = new FormData();
-    //     formData.append("images", file);
-    // try {
-    //     const response = await axiosInstance.post("/upload", formData, {
-    //         headers: { "Content-Type": "multipart/form-data" },
-    //     });
-    //     const newImageUrl = response.data[0]; // Assuming backend returns the first image link
-    //     setImages((prev) => {
-    //         const updatedImages = [...prev];
-    //         updatedImages[index] = newImageUrl;
-    //         return updatedImages;
-    //     });
-    // } catch (error) {
-    //     console.error("Error uploading image:", error);
-    // }
-    // }
+    const file = event.target.files?.[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("images", file);
+      formData.append("carId", id);
+      try {
+        const response = await axiosInstance.post("/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        const newImageUrl = response.data[0]; // Assuming backend returns the uploaded image URL
+        setImages((prev) => {
+          const updatedImages = [...prev];
+          updatedImages[index] = newImageUrl;
+          return updatedImages;
+        });
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
+
+  const handleAddImage = () => {
+    setImages((prev) => [...prev, ""]); // Add a placeholder for the new image
   };
 
   const handleImageDelete = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleAddImage = () => {
-    setImages((prev) => [...prev, ""]); // Add a placeholder for the new image
-  };
+  useEffect(() => {
+    if (car) {
+      setImages(car.images || []);
+    }
+  }, [car]);
 
   const handleInputChange = (field: keyof CarSchemaType, value: string) => {
     setFormState((prevState) => ({
