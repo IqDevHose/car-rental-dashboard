@@ -22,8 +22,6 @@ import {
   Zap,
 } from "lucide-react";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import axiosInstance from "@/utils/AxiosInstance";
 import { useMutation } from "@tanstack/react-query";
 
@@ -53,7 +51,7 @@ const Car = () => {
   const [editable, setEditable] = useState<boolean | undefined>(false);
   const [isAvailable, setIsAvailable] = useState(false);
 
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<{link: string}[]>([]);
 
   const [formState, setFormState] = useState<CarSchemaType>({
     name: "",
@@ -87,7 +85,7 @@ const Car = () => {
     },
     onSuccess: () => {
       setEditable(false);
-      queryClient.invalidateQueries(["car", id]);
+      queryClient.invalidateQueries({ queryKey: ["car", id] });
     },
   });
 
@@ -125,7 +123,7 @@ const Car = () => {
     index: number
   ) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (file && id) {
       const formData = new FormData();
       formData.append("images", file);
       formData.append("carId", id);
@@ -146,7 +144,7 @@ const Car = () => {
   };
 
   const handleAddImage = () => {
-    setImages((prev) => [...prev, ""]); // Add a placeholder for the new image
+    setImages((prev) => [...prev, { link: "" }]); // Add a placeholder object with empty link
   };
 
   const handleImageDelete = (index: number) => {
@@ -329,7 +327,7 @@ const Car = () => {
         </p>
         <div className="flex gap-x-4 flex-wrap">
           {images.map((img, index) => (
-            <Dialog key={index.link}>
+            <Dialog key={index}>
               <DialogTrigger asChild>
                 <div
                   className="relative rounded-md overflow-hidden cursor-pointer"
