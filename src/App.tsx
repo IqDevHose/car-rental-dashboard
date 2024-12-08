@@ -11,10 +11,13 @@ import Otp from "./pages/auth/Otp";
 import Admins from "./pages/admins/Admins";
 import AddAdmin from "./pages/admins/AddAdmin";
 import EditAdmin from "./pages/admins/EditAdmin";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Cars from "./pages/cars/cars";
 import CreateCar from "./pages/cars/createCar";
 import Car from "./pages/cars/Car";
+import BrandPage from "./pages/brands/Brands";
+import AddBrandPage from "./pages/brands/NewBrand";
+import EditBrandPage from "./pages/brands/EditBrand";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +38,10 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
+          <Route path="/add-brand" element={<AddBrandPage />} />
+          <Route path="/edit-brand/:brandId" element={<EditBrandPage />} />
+
+          <Route path="/brand" element={<BrandPage />} />
           <Route path="/" element={<Cars />} />
           <Route path="/cars/:id" element={<Car />} />
           <Route path="/cars/create" element={<CreateCar />} />
