@@ -13,6 +13,7 @@ import {
   Shield,
   Star,
   Car,
+  Home,
 } from "lucide-react";
 import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
@@ -67,6 +68,12 @@ export default function Sidebar({ }: Props) {
                   title: "Admins",
                   href: "/admins",
                   icon: Shield,
+                  variant: "ghost",
+                },
+                {
+                  title: "Brands",
+                  href: "/brand",
+                  icon: Home,
                   variant: "ghost",
                 },
               ]}
