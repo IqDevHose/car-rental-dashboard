@@ -24,6 +24,7 @@ export default function LoginPage() {
     onSuccess: (data) => {
       // Save token to localStorage if login is successful
       console.log(data);
+      localStorage.setItem("token", data.access_token);
       navigate("/");
     },
     onError: () => {
