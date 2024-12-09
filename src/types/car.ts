@@ -4,6 +4,7 @@ export interface Car {
   model: string;
   year: number;
   price: number;
+  name: string;
   description: string;
   images: CarImage[];
   createdAt: string;
@@ -23,5 +24,5 @@ export interface CreateCarDto {
   price: number;
   description: string;
 }
-    
-export interface UpdateCarDto extends Partial<CreateCarDto> {} 
+
+export interface UpdateCarDto extends Partial<CreateCarDto> {}

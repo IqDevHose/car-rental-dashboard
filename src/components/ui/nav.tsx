@@ -12,9 +12,10 @@ interface NavProps {
     variant: "default" | "ghost";
     href: string;
   }[];
+  onLinkClick?: () => void; // New prop for link click callback
 }
 
-export function Nav({ links }: NavProps) {
+export function Nav({ links, onLinkClick }: NavProps) {
   return (
     <TooltipProvider>
       <div className="group flex flex-col gap-4 py-8 ">
@@ -31,10 +32,11 @@ export function Nav({ links }: NavProps) {
                     size: "sm",
                   }),
                   link.variant === "default" &&
-                  "dark:bg-muted dark:hover:bg-muted",
+                    "dark:bg-muted dark:hover:bg-muted",
                   "justify-start"
                 )
               }
+              onClick={onLinkClick} // Trigger the onLinkClick callback
             >
               <link.icon className="mr-2 h-4 w-4" />
               {link.title}
@@ -42,8 +44,7 @@ export function Nav({ links }: NavProps) {
                 <span
                   className={cn(
                     "ml-auto",
-                    link.variant === "default" &&
-                    "text-background "
+                    link.variant === "default" && "text-background "
                   )}
                 >
                   {link.label}

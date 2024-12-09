@@ -23,7 +23,7 @@ export default function Cars() {
   if (error) return <div>Error loading cars</div>;
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 mt-12 md:mt-0">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Cars</h1>
         <Button onClick={() => navigate("/cars/create")}>Add New Car</Button>
@@ -47,7 +47,7 @@ export default function Cars() {
               <h2 className="text-xl font-semibold">
                 {car.brand} {car.model}
               </h2>
-              <p className="text-gray-600">Year: {car.year}</p>
+              <p className="text-gray-600">{car.name}</p>
               <p className="text-lg font-bold text-primary mt-2">
                 {car.price.toLocaleString()} IQD
               </p>

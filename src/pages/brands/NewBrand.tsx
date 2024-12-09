@@ -1,5 +1,5 @@
-import axiosInstance from '@/utils/AxiosInstance';
-import { useState } from 'react';
+import axiosInstance from "@/utils/AxiosInstance";
+import { useState } from "react";
 
 // Define the type for the brand
 interface Brand {
@@ -11,8 +11,8 @@ interface Brand {
 const AddBrandPage: React.FC = () => {
   // State to store the form input
   const [brand, setBrand] = useState<Brand>({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     image: null,
   });
 
@@ -49,7 +49,7 @@ const AddBrandPage: React.FC = () => {
 
     // Check if an image is selected
     if (!brand.image) {
-      setError('Please upload an image.');
+      setError("Please upload an image.");
       setLoading(false);
       return;
     }
@@ -57,29 +57,29 @@ const AddBrandPage: React.FC = () => {
     try {
       // Create a new FormData object to send both the name and image
       const formData = new FormData();
-      formData.append('name', brand.name);
-      formData.append('description', brand.description);
-      formData.append('image', brand.image); // Append the image file
+      formData.append("name", brand.name);
+      formData.append("description", brand.description);
+      formData.append("image", brand.image); // Append the image file
 
       // POST request to add a new brand
-      const response = await axiosInstance.post('/cars/brand', formData, {
+      const response = await axiosInstance.post("/cars/brand", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Make sure the content type is multipart
+          "Content-Type": "multipart/form-data", // Make sure the content type is multipart
         },
       });
 
       setSuccess(true);
-      setBrand({ name: '', description: '', image: null }); // Reset the form
+      setBrand({ name: "", description: "", image: null }); // Reset the form
     } catch (err) {
-      setError('Failed to add brand. Please try again.');
+      setError("Failed to add brand. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-blue-600 text-white p-4">
+    <div className="min-h-screen mt-12 md:mt-0">
+      <header className="  p-4">
         <h1 className="text-3xl font-bold">Add New Car Brand</h1>
       </header>
 
@@ -100,7 +100,10 @@ const AddBrandPage: React.FC = () => {
           )}
 
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
+            <label
+              htmlFor="name"
+              className="block text-sm font-semibold text-gray-700"
+            >
               Brand Name
             </label>
             <input
@@ -115,7 +118,10 @@ const AddBrandPage: React.FC = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="description" className="block text-sm font-semibold text-gray-700">
+            <label
+              htmlFor="description"
+              className="block text-sm font-semibold text-gray-700"
+            >
               Description
             </label>
             <input
@@ -130,7 +136,10 @@ const AddBrandPage: React.FC = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="image" className="block text-sm font-semibold text-gray-700">
+            <label
+              htmlFor="image"
+              className="block text-sm font-semibold text-gray-700"
+            >
               Brand Image
             </label>
             <input
@@ -146,10 +155,10 @@ const AddBrandPage: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg"
+            className="w-full py-2 px-4 bg-black hover:bg-black/75 text-white font-semibold rounded-lg"
             disabled={loading}
           >
-            {loading ? 'Adding Brand...' : 'Add Brand'}
+            {loading ? "Adding Brand..." : "Add Brand"}
           </button>
         </form>
       </main>

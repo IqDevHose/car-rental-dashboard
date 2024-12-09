@@ -1,6 +1,6 @@
-import axiosInstance from '@/utils/AxiosInstance';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axiosInstance from "@/utils/AxiosInstance";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Brand {
   image: string | undefined;
@@ -18,11 +18,11 @@ const BrandPage: React.FC = () => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const response = await axiosInstance.get('/cars/brands/all');
+        const response = await axiosInstance.get("/cars/brands/all");
         setBrands(response.data);
         setLoading(false);
       } catch (error) {
-        setError('Failed to load brands');
+        setError("Failed to load brands");
         setLoading(false);
       }
     };
@@ -31,7 +31,7 @@ const BrandPage: React.FC = () => {
   }, []);
 
   const handleAddBrandClick = () => {
-    navigate('/add-brand');
+    navigate("/add-brand");
   };
 
   const handleEditBrandClick = (brandId: number) => {
@@ -44,7 +44,7 @@ const BrandPage: React.FC = () => {
       await axiosInstance.delete(`/cars/brand/${brandId}`);
       setBrands(brands.filter((brand) => brand.id !== brandId));
     } catch (error) {
-      setError('Failed to delete brand');
+      setError("Failed to delete brand");
     }
   };
 
@@ -52,15 +52,15 @@ const BrandPage: React.FC = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-blue-600 text-white p-4">
+    <div className="min-h-screen  mt-12 md:mt-0">
+      <header className="  p-4">
         <h1 className="text-3xl font-bold">Car Brands</h1>
       </header>
 
       <main className="p-6">
         <button
           onClick={handleAddBrandClick}
-          className="mb-6 py-2 px-4 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="mb-6 py-2 px-4 bg-black hover:bg-black/75 text-white rounded-lg shadow-md  focus:outline-none focus:ring-2 "
         >
           Add New Brand
         </button>
@@ -68,12 +68,15 @@ const BrandPage: React.FC = () => {
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {brands.length > 0 ? (
             brands.map((brand) => (
-              <div key={brand.id} className="bg-white p-4 rounded-lg shadow-md">
+              <div
+                key={brand.id}
+                className="bg-white p-4 items-center justify-center flex flex-col gap-2 rounded-lg shadow-md"
+              >
+                <img className="w-20" src={brand.image} alt={brand.name} />
                 <h2 className="text-xl font-semibold mb-2">{brand.name}</h2>
-                <img className="w-10" src={brand.image} alt={brand.name} />
                 <p className="text-gray-600">{brand.description}</p>
 
-                <div className="mt-4 flex justify-between">
+                {/* <div className="mt-4 flex justify-between">
                   <button
                     onClick={() => handleEditBrandClick(brand.id)}
                     className="text-blue-600 hover:text-blue-800"
@@ -87,7 +90,7 @@ const BrandPage: React.FC = () => {
                   >
                     Delete
                   </button>
-                </div>
+                </div> */}
               </div>
             ))
           ) : (

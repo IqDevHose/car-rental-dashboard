@@ -51,7 +51,7 @@ const Car = () => {
   const [editable, setEditable] = useState<boolean | undefined>(false);
   const [isAvailable, setIsAvailable] = useState(false);
 
-  const [images, setImages] = useState<{link: string}[]>([]);
+  const [images, setImages] = useState<{ link: string }[]>([]);
 
   const [formState, setFormState] = useState<CarSchemaType>({
     name: "",
@@ -181,7 +181,7 @@ const Car = () => {
 
   return (
     <>
-      <div className="details px-4 py-2">
+      <div className="details px-4 py-2 mt-12 md:mt-0">
         <div className="header flex justify-between mb-4 items-center border-b pb-2 border-b-gray-300/75">
           <div className="flex items-center justify-center gap-x-4">
             <h1 className="text-xl font-bold">{car?.name}</h1>
@@ -216,7 +216,7 @@ const Car = () => {
             )}
           </div>
           <div className="flex gap-x-2">
-            {editable && (
+            {/* {editable && (
               <Button
                 className="rounded-full"
                 variant="outline"
@@ -233,8 +233,8 @@ const Car = () => {
               >
                 <Edit />
               </Button>
-            )}
-            {editable && (
+            )} */}
+            {/* {editable && (
               <Button
                 className="rounded-full"
                 variant="outline"
@@ -246,7 +246,7 @@ const Car = () => {
 
             <Button onClick={onDelete} className="bg-red-600 rounded-full">
               <Trash />
-            </Button>
+            </Button> */}
           </div>
         </div>
 
