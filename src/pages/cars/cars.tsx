@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
 import axiosInstance from "@/utils/AxiosInstance";
@@ -29,6 +29,7 @@ export default function Cars() {
 
   const handleSwitchChange = (id: any) => {
     toggleMostRentedMutation.mutate(id);
+    window.location.reload()
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -67,14 +68,14 @@ export default function Cars() {
                 {car.description}
               </p>
 
-              <div className="flex gap-x-4 items-center mt-4">
-                <h3>Is Most Rented</h3>
+            </div>
+            <div className="flex gap-x-4 items-center p-4">
+              <h3>Is Most Rented</h3>
 
-                <Switch
-                  checked={car.isMostRented}
-                  onCheckedChange={() => handleSwitchChange(car.id)}
-                />
-              </div>
+              <Switch
+                checked={car.isMostRented}
+                onCheckedChange={() => handleSwitchChange(car.id)}
+              />
             </div>
           </Card>
         ))}
