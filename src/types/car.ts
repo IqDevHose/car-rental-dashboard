@@ -9,6 +9,7 @@ export interface Car {
   images: CarImage[];
   createdAt: string;
   updatedAt: string;
+  isMostRented: boolean
 }
 
 export interface CarImage {
@@ -25,4 +26,4 @@ export interface CreateCarDto {
   description: string;
 }
 
-export interface UpdateCarDto extends Partial<CreateCarDto> {}
+export interface UpdateCarDto extends Partial<CreateCarDto> { }
