@@ -37,6 +37,7 @@ const carSchema = z.object({
   seats: z.string().optional(),
   specification: z.string().optional(),
   isAvailable: z.boolean().optional(),
+  year: z.string().optional(),
 });
 
 type CarSchemaType = z.infer<typeof carSchema>;
@@ -62,6 +63,7 @@ const Car = () => {
     engineDisplacement: "",
     power: "",
     mileage: "",
+    year: "",
     seats: "",
     specification: "",
     isAvailable: false,
@@ -108,6 +110,7 @@ const Car = () => {
         color: car.color,
         engineDisplacement: car.engineDisplacement,
         power: car.power,
+        year: car.year,
         mileage: car.mileage,
         seats: car.seats,
         specification: car.specification,
@@ -295,14 +298,14 @@ const Car = () => {
             />
             <InfoRow
               editable={editable}
-              label1="Power"
-              value1={formState.power}
+              label1="Year"
+              value1={formState.year}
               Icon1={Zap}
-              onChange1={(e) => handleInputChange("power", e.target.value)}
-              label2="Mileage"
-              value2={formState.mileage}
-              Icon2={Milestone}
-              onChange2={(e) => handleInputChange("mileage", e.target.value)}
+              onChange1={(e) => handleInputChange("year", e.target.value)}
+              // label2="Mileage"
+              // value2={formState.mileage}
+              // Icon2={Milestone}
+              // onChange2={(e) => handleInputChange("mileage", e.target.value)}
             />
             <InfoRow
               editable={editable}

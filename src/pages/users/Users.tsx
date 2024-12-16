@@ -44,7 +44,6 @@ export default function UsersPage() {
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosInstance.get("/auth/users");
-      console.log("Fetched users:", res.data);
 
       return res.data;
     },
@@ -81,7 +80,6 @@ export default function UsersPage() {
       user?.email?.toLowerCase().includes(userSearch.toLowerCase()) ||
       user?.phone?.includes(userSearch)
   );
-  console.log(users);
 
   // Define the columns for the table
   const columns: ColumnDef<User>[] = [

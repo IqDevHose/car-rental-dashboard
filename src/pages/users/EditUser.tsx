@@ -63,9 +63,7 @@ const EditUser = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-  };
+  const onSubmit = (data: FormData) => {};
 
   return (
     <div className="p-10 flex flex-col gap-5 w-full">
@@ -93,7 +91,6 @@ const EditUser = () => {
           {errors.name && <p className="text-red-500">{errors.name.message}</p>}
         </div>
 
-
         {/* Email Field */}
         <div className="flex flex-col gap-2">
           <label htmlFor="email">Email</label>
@@ -118,7 +115,7 @@ const EditUser = () => {
         {/* Submit Buttons */}
         <div className="flex justify-end gap-2">
           <Button variant="ghost" onClick={() => navigate("/users")}>
-           Cancel 
+            Cancel
           </Button>
           <Button type="submit" variant="default" disabled={mutation.isPending}>
             {mutation.isPending ? <Spinner size="sm" /> : "Save Changes"}

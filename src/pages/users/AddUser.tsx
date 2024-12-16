@@ -74,7 +74,6 @@ const AddUser = () => {
 
   const onSubmit = (data: FormData) => {
     mutation.mutate(data);
-    console.log(data);
   };
 
   return (

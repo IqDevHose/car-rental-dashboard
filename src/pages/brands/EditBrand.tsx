@@ -19,9 +19,8 @@ const EditBrandPage: React.FC = () => {
     const fetchBrand = async () => {
       try {
         //   const response = await axiosInstance.get(`/cars/brand/${brandId}`);
-          console.log(brandId);
-          setBrand(data);
-          setLoading(false);
+        setBrand(data);
+        setLoading(false);
       } catch (error) {
         setError("Failed to fetch brand");
         setLoading(false);

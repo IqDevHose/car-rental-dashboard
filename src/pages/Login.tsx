@@ -18,17 +18,17 @@ export default function LoginPage() {
 
   const mutation = useMutation({
     mutationFn: async (data: LoginData) => {
-      const response = await axiosInstance.post("/auth/login", data, {timeout: 10000});
+      const response = await axiosInstance.post("/auth/login", data, {
+        timeout: 10000,
+      });
       return response.data;
     },
     onSuccess: (data) => {
       // Save token to localStorage if login is successful
-      console.log(data);
       localStorage.setItem("token", data.access_token);
       navigate("/");
     },
     onError: () => {
-      console.log("Error");
       setError("Invalid username or password.");
     },
   });

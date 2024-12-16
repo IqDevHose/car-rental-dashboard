@@ -11,11 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import {
-  PencilIcon,
-  PlusIcon,
-  TrashIcon,
-} from "lucide-react";
+import { PencilIcon, PlusIcon, TrashIcon } from "lucide-react";
 import Loading from "@/components/Loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -46,7 +42,6 @@ export default function Admins() {
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosInstance.get("/users");
-      console.log(res.data)
       return res.data;
     },
   });
@@ -105,9 +100,8 @@ export default function Admins() {
   );
 
   // Filter users based on search input
-  const filteredData = users?.filter(
-    (user: User) =>
-      user?.name?.includes(userSearch.toLowerCase())
+  const filteredData = users?.filter((user: User) =>
+    user?.name?.includes(userSearch.toLowerCase())
   );
 
   // Define the columns for the table
@@ -135,7 +129,6 @@ export default function Admins() {
       cell: ({ row }) => {
         const id = row.original.id; // Access the user's ID
         const name = row.getValue("name") as string; // Access the user's name
-        console.log(row.original);
 
         return (
           <div className="flex gap-2">

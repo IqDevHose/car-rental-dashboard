@@ -18,7 +18,7 @@ const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email format").min(1, "Email is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(Object.values(RolesEnum) as [RolesEnum.USER, RolesEnum.ADMIN]) 
+  role: z.enum(Object.values(RolesEnum) as [RolesEnum.USER, RolesEnum.ADMIN]),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -26,7 +26,12 @@ type FormData = z.infer<typeof schema>;
 const AddAdmin = () => {
   const navigate = useNavigate();
 
-  const { control, handleSubmit, formState: { errors }, setValue } = useForm<FormData>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
@@ -40,14 +45,15 @@ const AddAdmin = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    // console.log(data)
     mutation.mutate(data);
   };
 
   return (
     <div className="p-10 flex flex-col gap-5 w-full">
       <PageTitle title="Add Admin" />
-      {mutation.error && <div className="text-red-500">{(mutation.error as Error).message}</div>}
+      {mutation.error && (
+        <div className="text-red-500">{(mutation.error as Error).message}</div>
+      )}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <div className="flex flex-col gap-2">
           <label htmlFor="name">Name</label>
@@ -55,7 +61,13 @@ const AddAdmin = () => {
             name="name"
             control={control}
             render={({ field }) => (
-              <Input {...field} id="name" type="text" disabled={mutation.isPending} className={`${errors.name ? 'border-red-500' : ''}`} />
+              <Input
+                {...field}
+                id="name"
+                type="text"
+                disabled={mutation.isPending}
+                className={`${errors.name ? "border-red-500" : ""}`}
+              />
             )}
           />
           {errors.name && <p className="text-red-500">{errors.name.message}</p>}
@@ -67,10 +79,18 @@ const AddAdmin = () => {
             name="email"
             control={control}
             render={({ field }) => (
-              <Input {...field} id="phone" type="tel" disabled={mutation.isPending} className={`${errors.email ? 'border-red-500' : ''}`} />
+              <Input
+                {...field}
+                id="phone"
+                type="tel"
+                disabled={mutation.isPending}
+                className={`${errors.email ? "border-red-500" : ""}`}
+              />
             )}
           />
-          {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="text-red-500">{errors.email.message}</p>
+          )}
         </div>
 
         <div className="flex flex-col gap-2">
@@ -79,19 +99,32 @@ const AddAdmin = () => {
             name="password"
             control={control}
             render={({ field }) => (
-              <Input {...field} id="password" type="tel" disabled={mutation.isPending} className={`${errors.password ? 'border-red-500' : ''}`} />
+              <Input
+                {...field}
+                id="password"
+                type="tel"
+                disabled={mutation.isPending}
+                className={`${errors.password ? "border-red-500" : ""}`}
+              />
             )}
           />
-          {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
+          )}
         </div>
 
         <div className="form-group">
-          <label htmlFor="role" className="block font-medium mb-2">Role</label>
+          <label htmlFor="role" className="block font-medium mb-2">
+            Role
+          </label>
           <Controller
             name="role"
             control={control}
             render={({ field }) => (
-              <select {...field} className="w-full p-3 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500">
+              <select
+                {...field}
+                className="w-full p-3 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+              >
                 {Object.values(RolesEnum).map((role, index) => (
                   <option key={index} value={role}>
                     {role}

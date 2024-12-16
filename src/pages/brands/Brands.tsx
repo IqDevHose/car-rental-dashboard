@@ -35,7 +35,6 @@ const BrandPage: React.FC = () => {
   };
 
   const handleEditBrandClick = (brandId: number) => {
-    console.log("Navigating to Edit Brand with ID:", brandId); // Debug log
     navigate(`/edit-brand/${brandId}`);
   };
 
