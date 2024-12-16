@@ -5,17 +5,61 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type UploadResponse = string[];
+
+const COLOR_PALETTE = [
+  '#FF6B6B', // Coral Red
+  '#E74C3C', // Vibrant Red
+  '#ffffff', // Turquoise
+  '#000000', // Sky Blue
+  '#F39C12', // Orange
+  '#FF8ED4', // Pink
+  '#2ECC71', // Emerald Green
+  '#3498DB', // Bright Blue
+  '#9B59B6'  // Lavender
+];
+
+enum CarFuelType {
+  gasoline = "Gasoline",
+  diesel = "Diesel",
+  electric_ = "Electric Batteries",
+  hybrid = "Hybrid"
+}
+
+enum CategoryType {
+  sedan = "Sedan",
+  wagon = "Wagon",
+  hatchback = "Hatchback",
+  sport = "Sport",
+  suv = "SUV",
+  convertibles = "Convertibles",
+  coupes = "Coupes",
+  pickup_truck = "Pickup Truck",
+  crossovers = "Crossovers",
+}
+
+enum SeatsType {
+  two = 2,
+  four = 4,
+  seven = 7,
+}
+
+enum SpecificationType {
+  economy = "Economy",
+  luxury = "Luxury",
+  sports = "Sports",
+}
 
 type CreateCarDto = {
   name: string;
   category: string;
   fuel: string;
-  mileage: number;
+  mileage?: number;
   specification: string;
   color: string;
-  power: number;
+  power?: number;
   engineDisplacement: number;
   price: number;
   seats: number;
@@ -120,23 +164,56 @@ const CreateCar = () => {
         </div>
         <div className="space-y-2">
           <label className="text-sm font-medium">Category</label>
-          <Input
+          {/* <Input
             type="text"
             placeholder="e.g., SUV, Sedan"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-          />
+          /> */}
+
+          <Select
+            value={category}
+            onValueChange={(value) => setCategory(value)}
+          // disabled={m.isPending}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select Category" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(CategoryType).map((value) => (
+                <SelectItem key={value} value={value}>
+                  {value.replace("_", " ")}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div className="space-y-2">
           <label className="text-sm font-medium">Fuel Type</label>
-          <Input
+          {/* <Input
             type="text"
             placeholder="e.g., Petrol, Diesel"
             value={fuel}
             onChange={(e) => setFuel(e.target.value)}
-          />
+          /> */}
+          <Select
+            value={fuel}
+            onValueChange={(value) => setFuel(value)}
+          // disabled={m.isPending}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select Fuel" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(CarFuelType).map((value) => (
+                <SelectItem key={value} value={value}>
+                  {value.replace("_", " ")}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <label className="text-sm font-medium">Mileage</label>
           <Input
             type="number"
@@ -144,8 +221,83 @@ const CreateCar = () => {
             value={mileage}
             onChange={(e) => setMileage(e.target.value)}
           />
+        </div> */}
+        {/* <div className="space-y-3">
+          <label className="block text-sm font-semibold text-gray-700">Color</label>
+          <div className="flex items-center space-x-3">
+            <div className="relative">
+              <input
+                type="color"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+                className="absolute inset-0 w-16 h-10 opacity-0 cursor-pointer peer"
+              />
+              <div
+                className="w-16 h-10 rounded-md border border-gray-300 shadow-sm 
+            peer-focus:ring-2 peer-focus:ring-blue-500 peer-focus:border-blue-500"
+                style={{ backgroundColor: color }}
+              />
+            </div>
+            <input
+              type="text"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              placeholder="Color code or name"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md 
+          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+          text-sm transition-all duration-200 ease-in-out"
+            />
+          </div>
+        </div> */}
+
+        <div className="space-y-4">
+          <label className="block text-sm font-semibold text-gray-700">Color</label>
+
+          {/* Color Palette */}
+          <div className="flex flex-wrap gap-2 mb-3">
+            {COLOR_PALETTE.map((paletteColor) => (
+              <button
+                type="button"
+                key={paletteColor}
+                onClick={() => setColor(paletteColor)}
+                className="w-8 h-8 border rounded-md shadow-sm hover:scale-110 transition-all 
+            focus:ring-2 focus:ring-offset-1 focus:ring-blue-500"
+                style={{
+                  backgroundColor: paletteColor,
+                  transform: color === paletteColor ? 'scale(1.1)' : 'scale(1)'
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Color Inputs */}
+          <div className="flex items-center space-x-3">
+            <div className="relative">
+              <input
+                type="color"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+                className="absolute inset-0 w-16 h-10 opacity-0 cursor-pointer peer"
+              />
+              <div
+                className="w-16 h-10 rounded-md border border-gray-300 shadow-sm 
+            peer-focus:ring-2 peer-focus:ring-blue-500 peer-focus:border-blue-500"
+                style={{ backgroundColor: color }}
+              />
+            </div>
+            <input
+              type="text"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              placeholder="Color code or name"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md 
+          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+          text-sm transition-all duration-200 ease-in-out"
+            />
+          </div>
         </div>
-        <div className="space-y-2">
+
+        {/* <div className="space-y-2">
           <label className="text-sm font-medium">Color</label>
           <div className="flex gap-2">
             <Input
@@ -161,8 +313,8 @@ const CreateCar = () => {
               placeholder="Color code or name"
             />
           </div>
-        </div>
-        <div className="space-y-2">
+        </div> */}
+        {/* <div className="space-y-2">
           <label className="text-sm font-medium">Power (HP)</label>
           <Input
             type="number"
@@ -170,7 +322,7 @@ const CreateCar = () => {
             value={power}
             onChange={(e) => setPower(e.target.value)}
           />
-        </div>
+        </div> */}
         <div className="space-y-2">
           <label className="text-sm font-medium">Engine (cc)</label>
           <Input
@@ -191,24 +343,60 @@ const CreateCar = () => {
         </div>
         <div className="space-y-2">
           <label className="text-sm font-medium">Seats</label>
-          <Input
+          {/* <Input
             type="number"
             placeholder="Number of seats"
             value={seats}
             onChange={(e) => setSeats(e.target.value)}
-          />
+          /> */}
+
+          <Select
+            value={seats}
+            onValueChange={(value) => setSeats(value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select Seats" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(SeatsType)
+                .filter((value) => typeof value === "number") // Keep only numeric values
+                .map((value) => (
+                  <SelectItem key={value} value={value.toString()}>
+                    {value}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
         </div>
         <div className="space-y-2">
           <label className="text-sm font-medium">Specification</label>
-          <Input
+          {/* <Input
             type="text"
             placeholder="Car specifications"
             value={specification}
             onChange={(e) => setSpecification(e.target.value)}
-          />
+          /> */}
+
+
+          <Select
+            value={specification}
+            onValueChange={(value) => setSpecification(value)}
+          // disabled={m.isPending}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select Specification" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(SpecificationType).map((value) => (
+                <SelectItem key={value} value={value}>
+                  {value.replace("_", " ")}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium">Car Images (Up to 6)</label>
+          <label className="text-sm font-medium">Car Images & Videos (Up to 10)</label>
           <Input
             type="file"
             multiple
