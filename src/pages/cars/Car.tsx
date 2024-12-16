@@ -289,7 +289,7 @@ const Car = () => {
               value1={formState.color}
               Icon1={Palette}
               onChange1={(e) => handleInputChange("color", e.target.value)}
-              label2="Engine Displacement"
+              label2="Engine"
               value2={formState.engineDisplacement}
               Icon2={CarFront}
               onChange2={(e) =>
@@ -302,10 +302,12 @@ const Car = () => {
               value1={formState.year}
               Icon1={Zap}
               onChange1={(e) => handleInputChange("year", e.target.value)}
-              // label2="Mileage"
-              // value2={formState.mileage}
-              // Icon2={Milestone}
-              // onChange2={(e) => handleInputChange("mileage", e.target.value)}
+              label2="Specification"
+              value2={formState.specification}
+              Icon2={Ratio}
+              onChange2={(e) =>
+                handleInputChange("specification", e.target.value)
+              }
             />
             <InfoRow
               editable={editable}
@@ -313,12 +315,6 @@ const Car = () => {
               value1={formState.seats}
               Icon1={GalleryHorizontal}
               onChange1={(e) => handleInputChange("seats", e.target.value)}
-              label2="Specification"
-              value2={formState.specification}
-              Icon2={Ratio}
-              onChange2={(e) =>
-                handleInputChange("specification", e.target.value)
-              }
             />
           </div>
         </div>
@@ -437,50 +433,69 @@ const InfoRow = ({
   Icon2,
 }: InfoRowType) => {
   return (
-    <div className={`grid grid-cols-1 md:grid-cols-2 gap-x-14 gap-y-16`}>
+    <div className={`grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6`}>
       <label
         htmlFor={label1}
         className="w-full flex items-center justify-between bg-gray-50/50 my-2 p-2 rounded-md"
       >
-        <p className="flex items-center gap-x-2">
-          <span className="p-1 rounded-md">{Icon1 && <Icon1 />}</span> {label1}
+        <p className="flex items-center gap-x-2 ">
+          <span className="p-1 rounded-md">{Icon1 && <Icon1 />}</span>
+          {label1}
         </p>
-        <input
-          type="text"
-          id={label1}
-          onChange={onChange1}
-          name={label1}
-          placeholder={value1}
-          disabled={!editable}
-          className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${
-            editable
-              ? "placeholder:font-normal border-gray-400"
-              : "placeholder:font-bold border-transparent"
-          }   disabled:bg-transparent text-right bg-transparent`}
-        />
+
+        {label1 !== "Color" && (
+          <input
+            type="text"
+            id={label1}
+            onChange={onChange1}
+            name={label1}
+            placeholder={value1}
+            disabled={!editable}
+            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${
+              editable
+                ? "placeholder:font-normal border-gray-400"
+                : "placeholder:font-bold border-transparent"
+            } disabled:bg-transparent text-right bg-transparent`}
+          />
+        )}
+
+        {label1 === "Color" && (
+          <div className="flex items-center gap-2">
+            <div
+              className="w-6 h-6 rounded-full border border-gray-200 shadow-sm"
+              style={{
+                backgroundColor: (value1 as string).toLowerCase(),
+              }}
+            />
+          </div>
+        )}
       </label>
 
-      <label
-        htmlFor={label2}
-        className="w-full flex items-center justify-between bg-gray-50/50 my-2 p-2 rounded-md"
-      >
-        <p className="flex items-center gap-x-2">
-          <span className="p-1 rounded-md">{Icon2 && <Icon2 />}</span> {label2}
-        </p>
-        <input
-          type="text"
-          id={label2}
-          onChange={onChange2}
-          name={label2}
-          placeholder={value2}
-          disabled={!editable}
-          className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${
-            editable
-              ? "placeholder:font-normal border-gray-400"
-              : "placeholder:font-bold border-transparent"
-          }   disabled:bg-transparent text-right bg-transparent`}
-        />
-      </label>
+      {label2 && (
+        <label
+          htmlFor={label2}
+          className="w-full flex items-center justify-between bg-gray-50/50 my-2 p-2 rounded-md"
+        >
+          <p className="flex items-center gap-x-2">
+            <span className="p-1 rounded-md">{Icon2 && <Icon2 />}</span>{" "}
+            {label2}
+          </p>
+
+          <input
+            type="text"
+            id={label2}
+            onChange={onChange2}
+            name={label2}
+            placeholder={value2}
+            disabled={!editable}
+            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${
+              editable
+                ? "placeholder:font-normal border-gray-400"
+                : "placeholder:font-bold border-transparent"
+            } disabled:bg-transparent text-right bg-transparent`}
+          />
+        </label>
+      )}
     </div>
   );
 };
