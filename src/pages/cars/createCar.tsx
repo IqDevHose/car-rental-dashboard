@@ -87,10 +87,10 @@ const CreateCar = () => {
     mutationFn: async (files: File[]) => {
       const formData = new FormData();
       files.forEach((file) => {
-        formData.append("images", file);
+        formData.append("files", file);
       });
       const response = await axiosInstance.post<UploadResponse>(
-        "/upload",
+        "/upload/minio-many",
         formData,
         {
           headers: {
