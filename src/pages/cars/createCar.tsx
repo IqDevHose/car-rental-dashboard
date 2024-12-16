@@ -49,6 +49,7 @@ enum CategoryType {
 enum SeatsType {
   two = 2,
   four = 4,
+  five = 5,
   seven = 7,
 }
 
