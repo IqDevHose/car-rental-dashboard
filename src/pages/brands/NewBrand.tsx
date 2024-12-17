@@ -1,5 +1,6 @@
 import axiosInstance from "@/utils/AxiosInstance";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Define the type for the brand
 interface Brand {
@@ -16,10 +17,14 @@ const AddBrandPage: React.FC = () => {
     image: null,
   });
 
+  const [previewImage, setPreviewImage] = useState<string | null>(null); // State for image preview
+
   // State to handle the form submission status
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,10 +38,12 @@ const AddBrandPage: React.FC = () => {
   // Handle image input change
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
       setBrand({
         ...brand,
-        image: e.target.files[0], // Set the selected image
+        image: file,
       });
+      setPreviewImage(URL.createObjectURL(file)); // Generate preview URL
     }
   };
 
@@ -58,7 +65,7 @@ const AddBrandPage: React.FC = () => {
       // Create a new FormData object to send both the name and image
       const formData = new FormData();
       formData.append("name", brand.name);
-      formData.append("description", brand.description);
+      // formData.append("description", brand.description);
       formData.append("image", brand.image); // Append the image file
 
       // POST request to add a new brand
@@ -70,6 +77,8 @@ const AddBrandPage: React.FC = () => {
 
       setSuccess(true);
       setBrand({ name: "", description: "", image: null }); // Reset the form
+      setPreviewImage(null);
+      navigate("/brand")
     } catch (err) {
       setError("Failed to add brand. Please try again.");
     } finally {
@@ -117,7 +126,7 @@ const AddBrandPage: React.FC = () => {
             />
           </div>
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label
               htmlFor="description"
               className="block text-sm font-semibold text-gray-700"
@@ -133,7 +142,7 @@ const AddBrandPage: React.FC = () => {
               required
               className="w-full mt-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
+          </div> */}
 
           <div className="mb-4">
             <label
@@ -152,6 +161,17 @@ const AddBrandPage: React.FC = () => {
               className="w-full mt-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
+          {previewImage && (
+            <div className="mb-4">
+              <p className="text-sm text-gray-700 mb-2">Image Preview:</p>
+              <img
+                src={previewImage}
+                alt="Preview"
+                className="w-full h-auto rounded-md border"
+              />
+            </div>
+          )}
 
           <button
             type="submit"
