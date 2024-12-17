@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
@@ -21,15 +21,19 @@ export default function Cars() {
     },
   });
 
+  const queryClient = useQueryClient(); // Access the query client
+
   const toggleMostRentedMutation = useMutation({
     mutationFn: async (id: any) => {
       return await axiosInstance.patch(`/cars/most-rented/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["cars"]);
     }
   });
 
   const handleSwitchChange = (id: any) => {
     toggleMostRentedMutation.mutate(id);
-    window.location.reload()
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -47,9 +51,9 @@ export default function Cars() {
           <Card
             key={car.id}
             className="cursor-pointer hover:shadow-lg transition-shadow"
-            onClick={() => navigate(`/cars/${car.id}`)}
+
           >
-            <div className="p-4">
+            <div className="p-4" onClick={() => navigate(`/cars/${car.id}`)}>
               {car.images?.[0] && (
                 <img
                   src={car.images[0].link}

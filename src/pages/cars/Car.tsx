@@ -100,6 +100,19 @@ const Car = () => {
     },
   });
 
+  const toggleMostRentedMutation = useMutation({
+    mutationFn: async (id: any) => {
+      return await axiosInstance.patch(`/cars/most-rented/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["car"]);
+    }
+  });
+
+  const handleToggleMostRented = (id: any) => {
+    toggleMostRentedMutation.mutate(id);
+  };
+
   useEffect(() => {
     if (car) {
       setFormState({
@@ -254,7 +267,7 @@ const Car = () => {
         </div>
 
         <div>
-          <div className="pb-12">
+          <div className="pb-8">
             <p className="font-bold pb-1 border-b border-b-gray-100 mb-2">
               Description
             </p>
@@ -266,6 +279,16 @@ const Car = () => {
               disabled={!editable}
               onChange={(e) => handleInputChange("description", e.target.value)}
             />
+
+            <div className="flex gap-x-4 items-center mt-8">
+              <h3>Is Most Rented</h3>
+
+              <Switch
+                checked={car.isMostRented}
+                onCheckedChange={() => handleToggleMostRented(id)}
+              />
+            </div>
+
           </div>
 
           <div>
@@ -451,11 +474,10 @@ const InfoRow = ({
             name={label1}
             placeholder={value1}
             disabled={!editable}
-            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${
-              editable
-                ? "placeholder:font-normal border-gray-400"
-                : "placeholder:font-bold border-transparent"
-            } disabled:bg-transparent text-right bg-transparent`}
+            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${editable
+              ? "placeholder:font-normal border-gray-400"
+              : "placeholder:font-bold border-transparent"
+              } disabled:bg-transparent text-right bg-transparent`}
           />
         )}
 
@@ -488,11 +510,10 @@ const InfoRow = ({
             name={label2}
             placeholder={value2}
             disabled={!editable}
-            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${
-              editable
-                ? "placeholder:font-normal border-gray-400"
-                : "placeholder:font-bold border-transparent"
-            } disabled:bg-transparent text-right bg-transparent`}
+            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${editable
+              ? "placeholder:font-normal border-gray-400"
+              : "placeholder:font-bold border-transparent"
+              } disabled:bg-transparent text-right bg-transparent`}
           />
         </label>
       )}
