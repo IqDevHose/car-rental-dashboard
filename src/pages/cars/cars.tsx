@@ -29,7 +29,7 @@ export default function Cars() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["cars"]);
-    }
+    },
   });
 
   const handleSwitchChange = (id: any) => {
@@ -51,7 +51,6 @@ export default function Cars() {
           <Card
             key={car.id}
             className="cursor-pointer hover:shadow-lg transition-shadow"
-
           >
             <div className="p-4" onClick={() => navigate(`/cars/${car.id}`)}>
               {car.images?.[0] && (
@@ -71,7 +70,6 @@ export default function Cars() {
               <p className="text-gray-500 mt-2 line-clamp-2">
                 {car.description}
               </p>
-
             </div>
             <div className="flex gap-x-4 items-center p-4">
               <h3>Is Most Rented</h3>
