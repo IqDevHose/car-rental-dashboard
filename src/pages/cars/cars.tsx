@@ -64,9 +64,28 @@ export default function Cars() {
                 {car.brand} {car.model}
               </h2>
               <p className="text-gray-600">{car.name}</p>
-              <p className="text-lg font-bold text-primary mt-2">
+              {/* <p className={`text-lg font-bold ${car.discountPrice && "line-through text-red-600"} text-primary mt-2`}>
                 {car.price.toLocaleString()} IQD
-              </p>
+              </p> */}
+              <div className="relative inline-block">
+                <p className={`text-lg font-bold text-primary mt-2 ${car.discountPrice ? 'opacity-50' : ''}`}>
+                  {car.price.toLocaleString()} IQD
+                </p>
+                {car.discountPrice && (
+                  <div
+                    className="absolute top-[20px] left-0 right-0 h-0.5 bg-red-600 
+          transform -rotate-6 origin-center 
+          shadow-md"
+                  />
+                )}
+              </div>
+              {
+                car.discountPrice &&
+
+                <p className="text-lg font-bold text-primary mt-2">
+                  {car.discountPrice.toLocaleString()} IQD
+                </p>
+              }
               <p className="text-gray-500 mt-2 line-clamp-2">
                 {car.description}
               </p>
@@ -80,7 +99,7 @@ export default function Cars() {
               />
             </div>
           </Card>
-        ))}
+        ))}"
       </div>
     </div>
   );

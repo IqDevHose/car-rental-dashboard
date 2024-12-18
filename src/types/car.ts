@@ -10,6 +10,8 @@ export interface Car {
   createdAt: string;
   updatedAt: string;
   isMostRented: boolean
+  discountPrice: string;
+  youtubeLink: string;
 }
 
 export interface CarImage {

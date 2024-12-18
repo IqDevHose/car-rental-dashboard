@@ -28,6 +28,9 @@ import { useMutation } from "@tanstack/react-query";
 const carSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
+  discountPrice: z.string().optional(),
+  price: z.string().optional(),
+  youtubeLink: z.string().optional(),
   fuel: z.string().min(1, "Fuel type is required"),
   category: z.string().optional(),
   color: z.string().optional(),
@@ -57,6 +60,8 @@ const Car = () => {
   const [formState, setFormState] = useState<CarSchemaType>({
     name: "",
     description: "",
+    discountPrice: "",
+    youtubeLink: "",
     fuel: "",
     category: "",
     color: "",
@@ -66,6 +71,7 @@ const Car = () => {
     year: "",
     seats: "",
     specification: "",
+    price: "",
     isAvailable: false,
   });
 
@@ -137,6 +143,9 @@ const Car = () => {
         seats: car.seats,
         specification: car.specification,
         isAvailable: car.isAvailable,
+        discountPrice: car.discountPrice,
+        youtubeLink: car.youtubeLink,
+        price: car.price,
       });
       setIsAvailable(car.isAvailable);
       setImages(car.images);
@@ -250,39 +259,6 @@ const Car = () => {
               </div>
             )}
           </div>
-          <div className="flex gap-x-2">
-            {/* {editable && (
-              <Button
-                className="rounded-full"
-                variant="outline"
-                onClick={() => setEditable(false)}
-              >
-                <X />
-              </Button>
-            )}
-            {!editable && (
-              <Button
-                className="rounded-full"
-                variant="outline"
-                onClick={() => setEditable(true)}
-              >
-                <Edit />
-              </Button>
-            )} */}
-            {/* {editable && (
-              <Button
-                className="rounded-full"
-                variant="outline"
-                onClick={onSubmit}
-              >
-                <Save />
-              </Button>
-            )}
-
-            <Button onClick={onDelete} className="bg-red-600 rounded-full">
-              <Trash />
-            </Button> */}
-          </div>
         </div>
 
         <div>
@@ -299,14 +275,64 @@ const Car = () => {
               onChange={(e) => handleInputChange("description", e.target.value)}
             />
 
-            <div className="flex gap-x-4 items-center mt-8">
-              <h3>Is Most Rented</h3>
+          </div>
 
-              <Switch
-                checked={car.isMostRented}
-                onCheckedChange={() => handleToggleMostRented(id)}
-              />
+          <div>
+            <div className="flex items-center justify-between bg-gray-50/50 p-2 rounded-md gap-x-4 mb-4">
+              <p className="font-bold text-nowrap">
+                Price
+              </p>
+              <div className="flex items-center gap-x-2">
+                <Input
+                  type="text"
+                  value={formState.price}
+                  placeholder={formState.price ? Number(formState.price).toLocaleString() : "Price"}
+                  className={"border w-64"}
+                />
+                <Button className="bg-green-600" >Update</Button>
+                <Button className="bg-red-500" >Cancel</Button>
+              </div>
             </div>
+            <div className="flex items-center justify-between bg-gray-50/50 p-2 rounded-md gap-x-4 mb-4">
+              <p className="font-bold text-nowrap">
+                Discount Price
+              </p>
+              <div className="flex items-center gap-x-2">
+                <Input
+                  type="text"
+                  value={formState.discountPrice}
+                  placeholder={formState.discountPrice ? Number(formState.discountPrice).toLocaleString() : "Discount Price"}
+                  className={"border w-64"}
+                />
+                <Button className="bg-green-600" >Update</Button>
+                <Button className="bg-red-500" >Cancel</Button>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between bg-gray-50/50 p-2 rounded-md gap-x-4 mb-4">
+              <p className="font-bold text-nowrap">
+                Youtube Link (Optional)
+              </p>
+              <div className="flex items-center gap-x-2">
+                <Input
+                  type="text"
+                  value={formState.youtubeLink}
+                  placeholder={formState.youtubeLink ? formState.youtubeLink : "Youtube Link"}
+                  className={"border w-64"}
+                />
+                <Button className="bg-green-600" >Update</Button>
+                <Button className="bg-red-500" >Cancel</Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-x-4 items-center my-8">
+            <h3 className="font-bold">Is Most Rented</h3>
+
+            <Switch
+              checked={car.isMostRented}
+              onCheckedChange={() => handleToggleMostRented(id)}
+            />
           </div>
 
           <div>
@@ -504,11 +530,10 @@ const InfoRow = ({
             name={label1}
             placeholder={value1}
             disabled={!editable}
-            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${
-              editable
-                ? "placeholder:font-normal border-gray-400"
-                : "placeholder:font-bold border-transparent"
-            } disabled:bg-transparent text-right bg-transparent`}
+            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${editable
+              ? "placeholder:font-normal border-gray-400"
+              : "placeholder:font-bold border-transparent"
+              } disabled:bg-transparent text-right bg-transparent`}
           />
         )}
 
@@ -541,11 +566,10 @@ const InfoRow = ({
             name={label2}
             placeholder={value2}
             disabled={!editable}
-            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${
-              editable
-                ? "placeholder:font-normal border-gray-400"
-                : "placeholder:font-bold border-transparent"
-            } disabled:bg-transparent text-right bg-transparent`}
+            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${editable
+              ? "placeholder:font-normal border-gray-400"
+              : "placeholder:font-bold border-transparent"
+              } disabled:bg-transparent text-right bg-transparent`}
           />
         </label>
       )}
