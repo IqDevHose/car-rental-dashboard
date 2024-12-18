@@ -93,7 +93,7 @@ const Car = () => {
     },
     onSuccess: () => {
       setEditable(false);
-      queryClient.invalidateQueries({ queryKey: ["car", id] });
+      queryClient.invalidateQueries({ queryKey: ["car"] });
     },
   });
 
@@ -103,6 +103,7 @@ const Car = () => {
     },
     onSuccess: () => {
       navigate("/");
+      queryClient.invalidateQueries({ queryKey: ["car"] });
     },
   });
 
@@ -111,7 +112,7 @@ const Car = () => {
       return await axiosInstance.patch(`/cars/most-rented/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["car"]);
+      queryClient.invalidateQueries({ queryKey: ["car"] });
     },
   });
 
@@ -221,10 +222,69 @@ const Car = () => {
     setIsAvailable((prev) => !prev);
   };
 
+  const updateDiscountPriceMutation = useMutation({
+    mutationFn: async () => {
+      return await axiosInstance.patch(`/cars/${id}`, {
+        discountPrice: formState.discountPrice
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["car"] });
+    },
+  });
+
+  const handleUpdateDiscountPrice = () => {
+    updateDiscountPriceMutation.mutate();
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const validatedData = carSchema.parse(formState);
+      onSubmit();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        console.error("Validation error:", error.errors);
+        // Here you could set error states and display them to the user
+      }
+    }
+  };
+
+  const updatePriceMutation = useMutation({
+    mutationFn: async () => {
+      return await axiosInstance.patch(`/cars/${id}`, {
+        price: formState.price
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["car"] });
+    },
+  });
+
+  const updateYoutubeLinkMutation = useMutation({
+    mutationFn: async () => {
+      return await axiosInstance.patch(`/cars/${id}`, {
+        youtubeLink: formState.youtubeLink
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["car"] });
+    },
+  });
+
+  const handleUpdatePrice = () => {
+    updatePriceMutation.mutate();
+  };
+
+  const handleUpdateYoutubeLink = () => {
+    updateYoutubeLinkMutation.mutate();
+  };
+
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="details px-4 py-2 mt-12 md:mt-0">
         <div className="header flex justify-between mb-4 items-center border-b pb-2 border-b-gray-300/75">
           <div className="flex items-center justify-center gap-x-4">
@@ -286,11 +346,25 @@ const Car = () => {
                 <Input
                   type="text"
                   value={formState.price}
+                  onChange={(e) => handleInputChange("price", e.target.value)}
                   placeholder={formState.price ? Number(formState.price).toLocaleString() : "Price"}
                   className={"border w-64"}
                 />
-                <Button className="bg-green-600" >Update</Button>
-                <Button className="bg-red-500" >Cancel</Button>
+                <Button 
+                  type="button"
+                  className="bg-green-600" 
+                  onClick={handleUpdatePrice}
+                  disabled={updatePriceMutation.isPending}
+                >
+                  {updatePriceMutation.isPending ? "Updating..." : "Update"}
+                </Button>
+                <Button 
+                  type="button"
+                  className="bg-red-500"
+                  onClick={() => setFormState(prev => ({ ...prev, price: car?.price || "" }))}
+                >
+                  Cancel
+                </Button>
               </div>
             </div>
             <div className="flex items-center justify-between bg-gray-50/50 p-2 rounded-md gap-x-4 mb-4">
@@ -301,11 +375,25 @@ const Car = () => {
                 <Input
                   type="text"
                   value={formState.discountPrice}
+                  onChange={(e) => handleInputChange("discountPrice", e.target.value)}
                   placeholder={formState.discountPrice ? Number(formState.discountPrice).toLocaleString() : "Discount Price"}
                   className={"border w-64"}
                 />
-                <Button className="bg-green-600" >Update</Button>
-                <Button className="bg-red-500" >Cancel</Button>
+                <Button 
+                  type="button"
+                  className="bg-green-600"
+                  onClick={handleUpdateDiscountPrice}
+                  disabled={updateDiscountPriceMutation.isPending}
+                >
+                  {updateDiscountPriceMutation.isPending ? "Updating..." : "Update"}
+                </Button>
+                <Button 
+                  type="button"
+                  className="bg-red-500"
+                  onClick={() => setFormState(prev => ({ ...prev, discountPrice: car?.discountPrice || "" }))}
+                >
+                  Cancel
+                </Button>
               </div>
             </div>
 
@@ -317,11 +405,25 @@ const Car = () => {
                 <Input
                   type="text"
                   value={formState.youtubeLink}
-                  placeholder={formState.youtubeLink ? formState.youtubeLink : "Youtube Link"}
+                  onChange={(e) => handleInputChange("youtubeLink", e.target.value)}
+                  placeholder={formState.youtubeLink || "Youtube Link"}
                   className={"border w-64"}
                 />
-                <Button className="bg-green-600" >Update</Button>
-                <Button className="bg-red-500" >Cancel</Button>
+                <Button 
+                  type="button"
+                  className="bg-green-600"
+                  onClick={handleUpdateYoutubeLink}
+                  disabled={updateYoutubeLinkMutation.isPending}
+                >
+                  {updateYoutubeLinkMutation.isPending ? "Updating..." : "Update"}
+                </Button>
+                <Button 
+                  type="button"
+                  className="bg-red-500"
+                  onClick={() => setFormState(prev => ({ ...prev, youtubeLink: car?.youtubeLink || "" }))}
+                >
+                  Cancel
+                </Button>
               </div>
             </div>
           </div>
@@ -484,7 +586,27 @@ const Car = () => {
           )}
         </div>
       </div>
-    </>
+
+      {/* Add form submit buttons when in edit mode */}
+      {editable && (
+        <div className="fixed bottom-4 right-4 flex gap-2">
+          <Button
+            type="submit"
+            className="bg-green-600"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? "Saving..." : "Save Changes"}
+          </Button>
+          <Button
+            type="button"
+            className="bg-gray-500"
+            onClick={() => setEditable(false)}
+          >
+            Cancel
+          </Button>
+        </div>
+      )}
+    </form>
   );
 };
 
