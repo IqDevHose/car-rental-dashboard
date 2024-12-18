@@ -18,6 +18,9 @@ import Car from "./pages/cars/Car";
 import BrandPage from "./pages/brands/Brands";
 import AddBrandPage from "./pages/brands/NewBrand";
 import EditBrandPage from "./pages/brands/EditBrand";
+import Offers from "./pages/offers/Offers";
+import EditOffer from "./pages/offers/EditOffer";
+import AddOffer from "./pages/offers/AddOffer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,17 +41,24 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
+          {/* Brands */}
+          <Route path="/brand" element={<BrandPage />} />
           <Route path="/add-brand" element={<AddBrandPage />} />
           <Route path="/edit-brand/:brandId" element={<EditBrandPage />} />
 
-          <Route path="/brand" element={<BrandPage />} />
+          {/* Cars */}
           <Route path="/" element={<Cars />} />
           <Route path="/cars/:id" element={<Car />} />
           <Route path="/cars/create" element={<CreateCar />} />
-          {/* <Route path="/" element={<Home />} /> */}
+
+          {/* Admins */}
           <Route path="/admins" element={<Admins />} />
           <Route path="/new-admin" element={<AddAdmin />} />
           <Route path="/edit-admin/:id" element={<EditAdmin />} />
+          {/* Offers */}
+          <Route path="/offers" element={<Offers />} />
+          <Route path="/edit-offer/:id" element={<EditOffer />} />
+          <Route path="/add-offer" element={<AddOffer />} />
         </Route>
 
         {/* Optional: Catch-all route for unmatched paths */}

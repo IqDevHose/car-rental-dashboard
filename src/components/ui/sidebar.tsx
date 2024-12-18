@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { Nav } from "./nav";
-import { Menu, X, LogOut, Shield, Car, Home } from "lucide-react";
+import {
+  Menu,
+  X,
+  LogOut,
+  Shield,
+  Car,
+  Home,
+  TicketPercent,
+} from "lucide-react";
 import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
@@ -61,6 +69,12 @@ export default function Sidebar({}: Props) {
                   title: "Brands",
                   href: "/brand",
                   icon: Home,
+                  variant: "ghost",
+                },
+                {
+                  title: "Offers",
+                  href: "/offers",
+                  icon: TicketPercent,
                   variant: "ghost",
                 },
               ]}
