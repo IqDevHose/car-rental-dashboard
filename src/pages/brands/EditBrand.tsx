@@ -54,7 +54,7 @@ const EditBrandPage: React.FC = () => {
       const formData = new FormData();
       formData.append("name", brand.name);
       if (brand.image) formData.append("image", brand.image);
-      await axiosInstance.put(`/cars/brand/${brandId}`, formData, {
+      await axiosInstance.patch(`/cars/brand/${brandId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
