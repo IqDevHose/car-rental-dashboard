@@ -51,8 +51,8 @@ const Car = () => {
   );
   const [editable, setEditable] = useState<boolean | undefined>(false);
   const [isAvailable, setIsAvailable] = useState(false);
-
-  const [images, setImages] = useState<{ link: string }[]>([]);
+  const [imageChanged, setImageChanged] = useState(false);
+  const [images, setImages] = useState<{ link: string; id: string }[]>([]);
 
   const [formState, setFormState] = useState<CarSchemaType>({
     name: "",
@@ -106,11 +106,20 @@ const Car = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["car"]);
-    }
+    },
   });
 
   const handleToggleMostRented = (id: any) => {
     toggleMostRentedMutation.mutate(id);
+  };
+
+  const [selectedImageId, setSelectedImageId] = useState<string | undefined>(
+    undefined
+  );
+
+  const handelSelectImage = (link: string, id: string) => {
+    setSelectedImageId(id);
+    setSelectedImage(link);
   };
 
   useEffect(() => {
@@ -141,26 +150,36 @@ const Car = () => {
     const file = event.target.files?.[0];
     if (file && id) {
       const formData = new FormData();
-      formData.append("images", file);
+      formData.append("image", file);
       formData.append("carId", id);
       try {
-        const response = await axiosInstance.post("/upload", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        const newImageUrl = response.data[0]; // Assuming backend returns the uploaded image URL
+        const response = await axiosInstance.put(
+          `/upload/${selectedImageId}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+        const newImageUrl = response.data[0];
         setImages((prev) => {
           const updatedImages = [...prev];
           updatedImages[index] = newImageUrl;
+          console.log(updatedImages);
           return updatedImages;
         });
+        setImageChanged(true); // Set imageChanged to true when an image is uploaded
       } catch (error) {
         console.error("Error uploading image:", error);
       }
     }
   };
 
+  const applyImageChange = () => {
+    setImageChanged(false);
+  };
+
   const handleAddImage = () => {
-    setImages((prev) => [...prev, { link: "" }]); // Add a placeholder object with empty link
+    setImages((prev) => [...prev, { link: "", id: "" }]); // Add a placeholder object with empty link
   };
 
   const handleImageDelete = (index: number) => {
@@ -288,7 +307,6 @@ const Car = () => {
                 onCheckedChange={() => handleToggleMostRented(id)}
               />
             </div>
-
           </div>
 
           <div>
@@ -353,7 +371,7 @@ const Car = () => {
               <DialogTrigger asChild>
                 <div
                   className="relative rounded-md overflow-hidden cursor-pointer"
-                  onClick={() => setSelectedImage(img.link)}
+                  onClick={() => handelSelectImage(img.link, img.id)}
                 >
                   <div className="flex opacity-0 hover:opacity-100 transition ease-in-out justify-center items-center absolute top-0 left-0 w-full h-full hover:bg-black/25 bg-transparent">
                     <div className="flex gap-x-2">
@@ -363,7 +381,7 @@ const Car = () => {
                     </div>
                   </div>
                   <img
-                    src={img.link}
+                    src={img?.link}
                     alt="Car"
                     className="rounded-md object-cover h-[150px]"
                   />
@@ -377,13 +395,13 @@ const Car = () => {
                 />
 
                 <label className="flex justify-between gap-x-2 mt-4">
-                  <label htmlFor={`file-upload-${img.link}`}>
+                  <label htmlFor={`file-upload-${img?.link}`}>
                     <p className="cursor-pointer rounded-full bg-black hover:bg-black/95 py-2 px-4 text-white">
                       Change
                     </p>
                     <input
                       type="file"
-                      id={`file-upload-${img.link}`}
+                      id={`file-upload-${img?.link}`}
                       className="hidden"
                       onChange={(e) => handleImageChange(e, index)}
                       accept="image/*"
@@ -398,6 +416,18 @@ const Car = () => {
                     <Trash />
                   </Button>
                 </label>
+
+                {/* Show Apply button only when image is changed */}
+                {imageChanged && (
+                  <div className="mt-4 flex justify-end">
+                    <Button
+                      onClick={applyImageChange}
+                      className="bg-green-600 rounded-full py-2 px-4 text-white"
+                    >
+                      Apply
+                    </Button>
+                  </div>
+                )}
               </DialogContent>
             </Dialog>
           ))}
@@ -474,10 +504,11 @@ const InfoRow = ({
             name={label1}
             placeholder={value1}
             disabled={!editable}
-            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${editable
-              ? "placeholder:font-normal border-gray-400"
-              : "placeholder:font-bold border-transparent"
-              } disabled:bg-transparent text-right bg-transparent`}
+            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${
+              editable
+                ? "placeholder:font-normal border-gray-400"
+                : "placeholder:font-bold border-transparent"
+            } disabled:bg-transparent text-right bg-transparent`}
           />
         )}
 
@@ -510,10 +541,11 @@ const InfoRow = ({
             name={label2}
             placeholder={value2}
             disabled={!editable}
-            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${editable
-              ? "placeholder:font-normal border-gray-400"
-              : "placeholder:font-bold border-transparent"
-              } disabled:bg-transparent text-right bg-transparent`}
+            className={`placeholder:text-black border py-1 rounded-md px-2 outline-none focus:border-black transition ease-in-out ${
+              editable
+                ? "placeholder:font-normal border-gray-400"
+                : "placeholder:font-bold border-transparent"
+            } disabled:bg-transparent text-right bg-transparent`}
           />
         </label>
       )}
